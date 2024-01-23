@@ -28,11 +28,11 @@ def inserir_pessoa():
         total_valor = passagens * valor_passagem
         qtd_notas_moedas = calcular_notas_moedas(total_valor)
 
-        # Adiciona informações à lista de pessoas
-        pessoas.append((nome, valor_passagem, passagens, qtd_notas_moedas))
-
         # Gera mensagem de notas e moedas
         mensagem_notas_moedas = exibir_notas_moedas(qtd_notas_moedas)
+
+        # Adiciona informações à lista de pessoas
+        pessoas.append((nome, valor_passagem, passagens, qtd_notas_moedas))
 
         # Renderiza a página inicial com as informações atualizadas
         return render_template('index.html', pessoas=pessoas, mensagem_notas_moedas=mensagem_notas_moedas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
@@ -62,11 +62,7 @@ def calcular_notas_moedas(valor):
 # Função para exibir as notas e moedas
 def exibir_notas_moedas(qtd_notas_moedas):
     notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
-    
-    # Obtém o nome da última pessoa adicionada
-    nome = pessoas[-1][0] if pessoas else "Pessoa Adicionada"
-
-    mensagem = f"{nome}:\n"
+    mensagem = ""
 
     for i in range(len(notas_moedas)):
         if qtd_notas_moedas[i] > 0:
@@ -76,7 +72,6 @@ def exibir_notas_moedas(qtd_notas_moedas):
                 mensagem += f"{qtd_notas_moedas[i]} moeda(s) de {notas_moedas[i]:.2f}\n"
 
     return mensagem
-
 
 # Função para calcular o total de notas e moedas utilizadas por todas as pessoas
 def calcular_total_notas_moedas(pessoas):
