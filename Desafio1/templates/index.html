@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Calculadora de Notas e Moedas</title>
+</head>
+<body>
+    <h1>Calculadora de Notas e Moedas</h1>
+    <br>
+    <br>
+    <form action="/inserir_pessoa" method="post">
+        <!-- Se houver mensagem de erro, exibe-a -->
+        {% if mensagem_erro %}
+            <p style="color: red;">{{ mensagem_erro }}</p>
+        {% endif %}
+
+        <label for="nome">Nome da Pessoa:</label>
+        <input type="text" id="nome" name="nome" required><br>
+        
+        <label for="valor_passagem">Valor da Passagem:</label>
+        <input type="number" id="valor_passagem" name="valor_passagem" step="0.01" required><br>
+        
+        <label for="passagens">Quantidade de Passagens:</label>
+        <input type="number" id="passagens" name="passagens" required><br>
+        
+        <button type="submit">Inserir Pessoa</button>
+    </form>
+
+    <!-- Botão para apagar informações -->
+    <form action="/apagar_informacoes" method="get">
+        <button type="submit">Apagar Informações</button>
+    </form>
+
+    <h2>Pessoas</h2>
+    
+    <ul>
+        {% for pessoa in pessoas %}
+            <li>
+                {{ pessoa[0] }} - Valor: R${{ pessoa[1] }} - Passagens: {{ pessoa[2] }}
+                <ul>
+                    <li>Total de Moedas Utilizadas: {{ pessoa[3]|sum }}</li>
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Calcular total de notas e moedas utilizadas por todas as pessoas -->
+    <h3>Notas e Moedas Necessárias (Total):</h3>
+    <pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
+
+</body>
+</html>
