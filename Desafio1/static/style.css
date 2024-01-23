@@ -9,7 +9,9 @@ body {
     align-items: center;
     min-height: 100vh; /* Para garantir que o conteúdo ocupe pelo menos a altura total da tela */
 }
-
+#notasMoedasTotal {
+    display: none;
+}
 h1 {
     background-color: #333;
     padding: 10px;
