@@ -785,6 +785,19 @@ a {
   transition: 0.25s ease;
   cursor: pointer;
 }
+.delete-button {
+  border: 1px solid currentColor;
+  color: var(--c-text-tertiary);
+  border-radius: 6px;
+  padding: 0.75em 2.5em;
+  background-color: transparent;
+  transition: 0.25s ease;
+  cursor: pointer;
+  width: 120px; /* Ajuste o valor conforme necessário */
+}
+.delete-button:focus, .save-button:hover {
+  color: var(--c-white);
+}
 .save-button:focus, .save-button:hover {
   color: var(--c-white);
 }
