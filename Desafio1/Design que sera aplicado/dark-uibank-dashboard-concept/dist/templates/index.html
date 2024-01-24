@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Calculadora da AI</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-ho72S2l26ePvNQ8k3uLpysJ2cuRXHzxj2wvw4Hkz6Ay6zxygeU8U3cd5X51btFFq" crossorigin="anonymous">
  <link rel="stylesheet" href="/static/style.css">
 
 </head>
@@ -41,6 +42,8 @@
 			}
 		}
 
+		function redirectToPassagem() {
+		}
 		function redirectToIndex() {
 			window.location.href = "{{ url_for('index') }}";
 		}
@@ -72,9 +75,14 @@
 					<span>Pessoas inseridas</span>
 				</a>
 				
+				<a href="javascript:void(0);" onclick="redirectToPassagem()">
+					<i class="ph-coin"></i>
+					<span>Passagem por Pessoa</span>
+				</a>
+
 				<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
 					<i class="ph-swap"></i>
-					<span>Total de moedas</span>
+					<span>Total de Passagem</span>
 				</a>
 				
 			</nav>

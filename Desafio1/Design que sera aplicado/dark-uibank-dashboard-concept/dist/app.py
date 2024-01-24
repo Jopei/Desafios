@@ -101,6 +101,7 @@ def limpar():
     pessoas.clear()
     return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
 
+
 # Executa o aplicativo se este script for executado diretamente
 if __name__ == '__main__':
     app.run(debug=True)
