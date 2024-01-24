@@ -1,5 +1,9 @@
 # Importa as bibliotecas necessárias do Flask
 from flask import Flask, render_template, request, redirect, url_for
+from flask import send_file
+from docx import Document
+import pandas as pd
+from reportlab.pdfgen import canvas
 
 # Inicia a aplicação Flask
 app = Flask(__name__)
@@ -101,6 +105,78 @@ def limpar():
     pessoas.clear()
     return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
 
+@app.route('/exportar_excel')
+def exportar_excel():
+    if not pessoas:
+        return "Nenhuma pessoa para exportar."
+
+    # Criando um DataFrame do pandas com os dados
+    df = pd.DataFrame(pessoas, columns=['Nome', 'Valor', 'Quantidade de Passagens', 'Quantidade de Moedas'])
+
+    # Exportando para um arquivo Excel (xlsx)
+    excel_filename = 'pessoas_data.xlsx'
+    df.to_excel(excel_filename, index=False)
+
+    return f'Dados exportados para {excel_filename}.'
+
+@app.route('/gerar_pdf')
+def gerar_pdf():
+    # Crie um objeto PDF
+    response = canvas.Canvas("dados_pessoas.pdf")
+
+    # Adicione os cabeçalhos do PDF
+    response.drawString(100, 800, "Nome")
+    response.drawString(200, 800, "Valor")
+    response.drawString(300, 800, "Qtd Passagens")
+    response.drawString(400, 800, "Qtd de Moedas")
+
+    # Adicione os dados da lista de pessoas ao PDF
+    y_position = 780
+    for pessoa in pessoas:
+        response.drawString(100, y_position, str(pessoa[0]))
+        response.drawString(200, y_position, str(pessoa[1]))
+        response.drawString(300, y_position, str(pessoa[2]))
+        response.drawString(400, y_position, str(pessoa[3]))
+
+        y_position -= 20
+
+    # Salve o PDF e finalize o objeto
+    response.save()
+
+    return "PDF gerado com sucesso!"
+
+@app.route('/exportar_word')
+def exportar_word():
+    # Criar um novo documento Word
+    doc = Document()
+
+    # Adicionar um título ao documento
+    doc.add_heading('Relatório de Pessoas', 0)
+
+    # Adicionar uma tabela com cabeçalhos
+    table = doc.add_table(rows=1, cols=4)
+    table.autofit = True
+
+    header_cells = table.rows[0].cells
+    header_cells[0].text = 'Nome'
+    header_cells[1].text = 'Valor'
+    header_cells[2].text = 'Qtd de Passagens'
+    header_cells[3].text = 'Qtd de Moedas'
+
+    # Adicionar os dados da lista de pessoas à tabela
+    for pessoa in pessoas:
+        row_cells = table.add_row().cells
+        row_cells[0].text = pessoa[0]  # Nome
+        row_cells[1].text = str(pessoa[1])  # Valor
+        row_cells[2].text = str(pessoa[2])  # Quantidade de Passagens
+        row_cells[3].text = '\n'.join(exibir_notas_moedas(pessoa[3]))  # Quantidade de Moedas
+
+    # Salvar o documento em um arquivo temporário
+    temp_filename = 'relatorio_pessoas.docx'
+    doc.save(temp_filename)
+
+    # Enviar o arquivo para o cliente
+    return send_file(temp_filename, as_attachment=True, download_name='relatorio_pessoas.docx')
 
 # Executa o aplicativo se este script for executado diretamente
 if __name__ == '__main__':
