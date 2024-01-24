@@ -46,10 +46,16 @@ def listar_pessoas():
 
 # Rota para a página com o total de moedas
 @app.route('/total_moedas/<int:pessoa_index>')
-def total_moedas(pessoa_index):
+def detalhes_moedas(pessoa_index):
     pessoa = pessoas[pessoa_index]
     total_notas_moedas = pessoa[3]
     return render_template('total_moedas.html', pessoa=pessoa, total_notas_moedas=total_notas_moedas, exibir_notas_moedas=exibir_notas_moedas)
+
+# Rota para a página com o total de moedas para todas as pessoas
+@app.route('/total_moedas_global')
+def total_moedas_global():
+    total_notas_moedas = calcular_total_notas_moedas(pessoas)
+    return render_template('total_moedas.html', total_notas_moedas=total_notas_moedas)
 
 # Função para calcular a quantidade de notas e moedas necessárias
 def calcular_notas_moedas(valor):
@@ -89,6 +95,7 @@ def calcular_total_notas_moedas(pessoas):
 @app.route('/inserir')
 def inserir():
     return render_template('inserir.html')
+
 # Executa o aplicativo se este script for executado diretamente
 if __name__ == '__main__':
     app.run(debug=True)
