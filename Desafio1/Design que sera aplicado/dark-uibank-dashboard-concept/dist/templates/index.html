@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Calculadora da AI</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
- <link rel="stylesheet" href="/Design que sera aplicado/dark-uibank-dashboard-concept/dist/static/style.css">
+ <link rel="stylesheet" href="/static/style.css">
 
 </head>
 <body>
@@ -30,23 +30,42 @@
 		</div>
 
 	</header>
+
+	<script>
+		// Função para redirecionar para a página inserir.html
+		function redirectToInserir() {
+			window.location.href = "{{ url_for('inserir') }}";
+		}
+
+  		function redirectToPessoas() {
+        window.location.href = "{{ url_for('listar_pessoas') }}";
+    	}
+
+	</script>
+	
 	<div class="app-body">
 		<div class="app-body-navigation">
 			<nav class="navigation">
-				<a href="./inserir.html">
+				<a href="javascript:void(0);" onclick="redirectToInserir()">
 					<i class="ph-browsers"></i>
 					<span>Inserir pessoa</span>
 				</a>
-				<a href="./pessoas.html">
+				
+				<a href="javascript:void(0);" onclick="redirectToPessoas()">
 					<i class="ph-check-square"></i>
 					<span>Pessoas inseridas</span>
 				</a>
+				
 				<a href="#">
 					<i class="ph-swap"></i>
 					<span>Total de moedas</span>
 				</a>
 				
 			</nav>
+			
+			
+			<!-- Adicione este botão em algum lugar do seu conteúdo -->
+			<button onclick="redirectToInserir()">Ir para Inserir</button>
 			<footer class="footer">
 				<h1>Desafio<small>©</small></h1>
 				<div>

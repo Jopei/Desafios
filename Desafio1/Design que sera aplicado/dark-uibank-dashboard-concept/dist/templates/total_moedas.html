@@ -61,18 +61,15 @@
     <div class="app-body-main-content">
       <section class="transfer-section">
         <div class="transfer-section-header">
-          <h2>Pessoas Inseridas</h2>
+          <h2>Total de moedas usadas por {{ pessoa[0] }}</h2>
         </div>
-        <ul>
-          {% for nome in nomes_pessoas %}
-            <li>{{ nome }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </section>
-  </div>		
-</div>
-<!-- partial -->
-<script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
+        <div id="notasMoedasTotal">
+          <pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
+        </div>
+      </section>
+    </div>		
+  </div>
+  <!-- partial -->
+  <script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
 </body>
 </html>
