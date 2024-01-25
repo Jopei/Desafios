@@ -71,7 +71,7 @@
 				}
 			}
 
-			
+
 			function redirectToIndex() {
 				window.location.href = "{{ url_for('index') }}";
 			}
@@ -107,7 +107,7 @@
 
 					<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
 						<i class="ph-swap"></i>
-						<span>Total de Passagem</span>
+						<span>Total Moedas</span>
 					</a>
 
 				</nav>
@@ -121,19 +121,41 @@
 			</div>
 			<div class="app-body-main-content">
 
-				</section>
+
 				<section class="recent-people-section">
 					<div class="transfer-section-header">
-						
-						<h2>Ultimas pessoas inseridas</h2>
+
+						<h2>Total de Notas e Moedas por pessoa</h2>
 					</div>
 					<div class="recent-people">
-						
+						<ul>
 
-						<h3>Notas e Moedas Necessárias (Total):</h3>
-   									 <pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
+							{% for i in range(pessoas|length) %}
+							<br>
+							<li>{{ pessoas[i][0] }}:</li>
+							<ul>
+								{% for detalhe in detalhes_por_pessoa[i] %}
+								<li>{{ detalhe }}</li>
+								{% endfor %}
+							</ul>
+							{% endfor %}
+						</ul>
 					</div>
 				</section>
+				<br>
+				<section class="recent-people-section">
+					<div class="transfer-section-header">
+
+						<h2>Total de Notas e Moedas</h2>
+					</div>
+					<div class="recent-people">
+						<br>
+						<pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
+					</div>
+				</section>
+
+
+
 			</div>
 			<section class="payment-section">
 				<h2>Exportações</h2>

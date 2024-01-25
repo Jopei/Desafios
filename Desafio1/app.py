@@ -60,8 +60,37 @@ def detalhes_moedas(pessoa_index):
 @app.route('/total_moedas_global')
 def total_moedas_global():
     total_notas_moedas = calcular_total_notas_moedas(pessoas)
-    return render_template('total_moedas.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
+    detalhes_total_moedas = detalhes_notas_moedas(total_notas_moedas)
+    detalhes_por_pessoa = detalhes_notas_moedas_por_pessoa([pessoa[3] for pessoa in pessoas])
+    return render_template('total_moedas.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas,detalhes_total_moedas=detalhes_total_moedas,detalhes_por_pessoa=detalhes_por_pessoa)
 
+# Função para calcular os detalhes das notas e moedas utilizadas por pessoa
+def detalhes_notas_moedas_por_pessoa(qtd_notas_moedas):
+    notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
+    detalhes_por_pessoa = []
+
+    for i in range(len(qtd_notas_moedas)):
+        detalhes = []
+        for j in range(len(notas_moedas)):
+            if qtd_notas_moedas[i][j] > 0:
+                if notas_moedas[j] >= 1:
+                    detalhes.append(f"{qtd_notas_moedas[i][j]} nota(s) de R$ {notas_moedas[j]}")
+                else:
+                    detalhes.append(f"{qtd_notas_moedas[i][j]} moeda(s) de R$ {notas_moedas[j]:.2f}")
+        detalhes_por_pessoa.append(detalhes)
+
+    return detalhes_por_pessoa
+def detalhes_notas_moedas(qtd_notas_moedas):
+    notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
+    detalhes = []
+
+    for i in range(len(notas_moedas)):
+        if qtd_notas_moedas[i] > 0:
+            if notas_moedas[i] >= 1:
+                detalhes.append(f"{qtd_notas_moedas[i]} nota(s) de R$ {notas_moedas[i]}")
+            else:
+                detalhes.append(f"{qtd_notas_moedas[i]} moeda(s) de R$ {notas_moedas[i]:.2f}")
+    return detalhes
 # Função para calcular a quantidade de notas e moedas necessárias
 def calcular_notas_moedas(valor):
     notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
