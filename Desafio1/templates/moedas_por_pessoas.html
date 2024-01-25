@@ -1,99 +1,109 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <title>Calculadora da AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    integrity="sha384-ho72S2l26ePvNQ8k3uLpysJ2cuRXHzxj2wvw4Hkz6Ay6zxygeU8U3cd5X51btFFq" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
-<div class="app">
-  <header class="app-header">
-    <div class="app-header-logo">
-      <div class="logo">
-        <span class="logo-icon">
-          <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
-        </span>
-        <h1 class="logo-title">
-          <span>João</span>
-          <span>AIMG</span>
-        </h1>
+  <div class="app">
+    <header class="app-header">
+      <div class="app-header-logo">
+        <div class="logo">
+          <span class="logo-icon">
+            <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+          </span>
+          <h1 class="logo-title">
+            <span>João</span>
+            <span>AIMG</span>
+          </h1>
+        </div>
       </div>
-    </div>
-    
-    <div class="app-header-mobile">
-      <button class="icon-button large">
-        <i class="ph-list"></i>
-      </button>
-    </div>
-  </header>
-  
-  <script>
-		// Função para redirecionar para a página inserir.html
-		function redirectToIndex() {
-			window.location.href = "{{ url_for('index') }}";
-		}
-		function redirectToInserir() {
-			window.location.href = "{{ url_for('inserir') }}";
-		}
-		function redirectToTotal_moedas() {
-			window.location.href = "{{ url_for('total_moedas_global') }}";
-		}
-  		function redirectToPessoas() {
-      	  window.location.href = "{{ url_for('listar_pessoas') }}";
-    	}
 
-	</script>
-	<div class="app-body">
-		<div class="app-body-navigation">
-			<nav class="navigation">
-				<a href="javascript:void(0);" onclick="redirectToIndex()">
-					<i class="ph-list"></i>
-					<span>Home</span>
-				</a>
-				<a href="javascript:void(0);" onclick="redirectToInserir()">
-					<i class="ph-browsers"></i>
-					<span>Inserir pessoa</span>
-				</a>
-				
-				<a href="javascript:void(0);" onclick="redirectToPessoas()">
-					<i class="ph-check-square"></i>
-					<span>Pessoas inseridas</span>
-				</a>
-				
-				<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
-					<i class="ph-swap"></i>
-					<span>Total de moedas</span>
-				</a>
-				
-			</nav>
-      
-      <footer class="footer">
-        <h1>Desafio<small>©</small></h1>
-        <div>
-          AIMG ©<br />
-          All Rights Reserved 2023
-        </div>
-      </footer>
-    </div>
-    
-    <div class="app-body-main-content">
-      <section class="transfer-section">
-        <div class="transfer-section-header">
-            <h2>Detalhes de Moedas - {{ pessoa[0] }}</h2>
-        </div>
-        
-        <pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
-                    
+      <div class="app-header-mobile">
+        <button class="icon-button large">
+          <i class="ph-list"></i>
+        </button>
       </div>
-    </section>
-  </div>		
-</div>
-<!-- partial -->
-<script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
+    </header>
+
+    <script>
+      // Função para redirecionar para a página inserir.html
+      function redirectToIndex() {
+        window.location.href = "{{ url_for('index') }}";
+      }
+      function redirectToInserir() {
+        window.location.href = "{{ url_for('inserir') }}";
+      }
+      function redirectToTotal_moedas() {
+        window.location.href = "{{ url_for('total_moedas_global') }}";
+      }
+      function redirectToPessoas() {
+        window.location.href = "{{ url_for('listar_pessoas') }}";
+      }
+
+    </script>
+    <div class="app-body">
+      <div class="app-body-navigation">
+        <nav class="navigation">
+          <a href="javascript:void(0);" onclick="redirectToIndex()">
+            <i class="ph-list"></i>
+            <span>Home</span>
+          </a>
+          <a href="javascript:void(0);" onclick="redirectToInserir()">
+            <i class="ph-browsers"></i>
+            <span>Inserir pessoa</span>
+          </a>
+
+          <a href="javascript:void(0);" onclick="redirectToPessoas()">
+            <i class="ph-check-square"></i>
+            <span>Pessoas inseridas</span>
+          </a>
+
+          <a href="javascript:void(0);" onclick="redirectToPassagem()">
+						<i class="ph-coin"></i>
+						<span>Passagem por Pessoa</span>
+					</a>
+
+          <a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
+            <i class="ph-swap"></i>
+            <span>Total de moedas</span>
+          </a>
+
+        </nav>
+
+        <footer class="footer">
+          <h1>Desafio<small>©</small></h1>
+          <div>
+            AIMG ©<br />
+            All Rights Reserved 2023
+          </div>
+        </footer>
+      </div>
+
+      <div class="app-body-main-content">
+        <section class="transfer-section">
+          <div class="transfer-section-header">
+            <h2>Detalhes de Moedas - {{ pessoa[0] }}</h2>
+          </div>
+
+          <pre>{{ exibir_notas_moedas(total_notas_moedas) }}</pre>
+
+      </div>
+      </section>
+    </div>
+  </div>
+  <!-- partial -->
+  <script src='https://unpkg.com/phosphor-icons'></script>
+  <script src="./script.js"></script>
 </body>
+
 </html>

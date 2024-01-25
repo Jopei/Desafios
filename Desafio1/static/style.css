@@ -739,35 +739,53 @@ a {
   border-color: var(--c-white);
 }
 
-.faq {
-  margin-top: 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-.faq p {
-  color: var(--c-text-tertiary);
-  font-size: 0.875rem;
-}
-.faq div {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  border-top: 1px solid var(--c-gray-600);
-  border-bottom: 1px solid var(--c-gray-600);
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-}
-.faq div label {
-  padding-right: 1rem;
-  margin-right: 1rem;
-  border-right: 1px solid var(--c-gray-600);
-}
-.faq div input {
+
+.inserir input {
   border: 0;
   background-color: transparent;
   padding: 0.25em 0;
   width: 100%;
+  border-radius: 8px;
+ 
+  color: white;
+  border: 1px solid #ffffff;
+  padding-left: 10px
+  
+}
+.inserir input[type="number"]::-webkit-inner-spin-button,
+.inserir input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inserir input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    background-color: transparent;
+    color: white;
+    border: 1px solid #ffffff;
+    padding: 0.25em 0;
+   
+    border-radius: 8px;
+    padding-left: 10px;
+}
+.inserir input::placeholder {
+  text-align: center;
+  line-height: inherit; /* Isso mantém a altura da linha igual à do campo de entrada */
+}
+
+.inserir_nome {
+  width: 50%;
+}
+
+/* Estilo para o segundo input */
+.inserir_valor{
+  width: 50%;
+}
+
+/* Estilo para o terceiro input */
+.inserir_qtd {
+  width: 50%;
 }
 
 .payment-section-footer {
