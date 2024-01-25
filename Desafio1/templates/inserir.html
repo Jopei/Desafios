@@ -38,7 +38,41 @@
 
 		</header>
 		<script>
+			function exportarWord(index) {
+				// Envia uma requisição para o servidor para exportar os dados dessa pessoa
+				fetch(`/exportar_word/${index}`, { method: 'GET' })
+					.then(response => response.blob())
+					.then(blob => {
+						// Cria um link para fazer o download do arquivo
+						const url = window.URL.createObjectURL(new Blob([blob]));
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = `relatorio_pessoa_${index}.docx`;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);
+					})
+					.catch(error => console.error('Erro ao exportar para Word:', error));
+			}
+			function gerarPDF() {
+				// Redirecionar para a rota que gera o PDF
+				window.location.href = "{{ url_for('gerar_pdf') }}";
+			}
+			function exportarParaExcel() {
+				// Redireciona para a rota que exporta para Excel
+				window.location.href = "{{ url_for('exportar_excel') }}";
+			}
 			// Função para redirecionar para a página inserir.html
+			function apagarTodasInformacoes() {
+				var confirmacao = confirm("Tem certeza de que deseja apagar todas as informações?");
+				// Se o usuário confirmar, redirecionar para a página de apagar
+				if (confirmacao) {
+					window.location.href = "{{ url_for('limpar') }}";
+				}
+			}
+
+			
 			function redirectToIndex() {
 				window.location.href = "{{ url_for('index') }}";
 			}
@@ -174,7 +208,7 @@
 										<button class="icon-button">
 											<i class="ph-caret-right-bold"></i>
 										</button>
-
+									</form>
 								</div>
 							</div>
 						</div>
@@ -187,6 +221,8 @@
 
 					</div>
 				</section>
+
+					
 		</div>
 
 

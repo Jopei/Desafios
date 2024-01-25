@@ -36,21 +36,55 @@
     </header>
 
     <script>
-      // Função para redirecionar para a página inserir.html
-      function redirectToIndex() {
-        window.location.href = "{{ url_for('index') }}";
-      }
-      function redirectToInserir() {
-        window.location.href = "{{ url_for('inserir') }}";
-      }
-      function redirectToTotal_moedas() {
-        window.location.href = "{{ url_for('total_moedas_global') }}";
-      }
-      function redirectToPessoas() {
-        window.location.href = "{{ url_for('listar_pessoas') }}";
-      }
+			function exportarWord(index) {
+				// Envia uma requisição para o servidor para exportar os dados dessa pessoa
+				fetch(`/exportar_word/${index}`, { method: 'GET' })
+					.then(response => response.blob())
+					.then(blob => {
+						// Cria um link para fazer o download do arquivo
+						const url = window.URL.createObjectURL(new Blob([blob]));
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = `relatorio_pessoa_${index}.docx`;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);
+					})
+					.catch(error => console.error('Erro ao exportar para Word:', error));
+			}
+			function gerarPDF() {
+				// Redirecionar para a rota que gera o PDF
+				window.location.href = "{{ url_for('gerar_pdf') }}";
+			}
+			function exportarParaExcel() {
+				// Redireciona para a rota que exporta para Excel
+				window.location.href = "{{ url_for('exportar_excel') }}";
+			}
+			// Função para redirecionar para a página inserir.html
+			function apagarTodasInformacoes() {
+				var confirmacao = confirm("Tem certeza de que deseja apagar todas as informações?");
+				// Se o usuário confirmar, redirecionar para a página de apagar
+				if (confirmacao) {
+					window.location.href = "{{ url_for('limpar') }}";
+				}
+			}
 
-    </script>
+			
+			function redirectToIndex() {
+				window.location.href = "{{ url_for('index') }}";
+			}
+			function redirectToInserir() {
+				window.location.href = "{{ url_for('inserir') }}";
+			}
+			function redirectToTotal_moedas() {
+				window.location.href = "{{ url_for('total_moedas_global') }}";
+			}
+			function redirectToPessoas() {
+				window.location.href = "{{ url_for('listar_pessoas') }}";
+			}
+
+		</script>
     <div class="app-body">
       <div class="app-body-navigation">
         <nav class="navigation">
@@ -103,65 +137,66 @@
       </section>
       <section class="payment-section">
         <h2>Exportações</h2>
-        <div class="payment-section-header">
+				<div class="payment-section-header">
 
-        </div>
-        <section class="payment-section">
+				</div>
+				<section class="payment-section">
 
-          <div class="payments">
-            <div class="payment">
-              <div class="card green text-center">
-                <!-- Adiciona o ícone do Excel usando Font Awesome e ajusta o tamanho -->
-                <i class="fas fa-file-excel excel-icon" style="font-size: 700%;"></i>
-              </div>
-              <div class="payment-details">
-                <h3>Excel</h3>
-                <div>
-                  <span>.xlsx</span>
-                  <button class="icon-button" onclick="exportarParaExcel()">
-                    <i class="ph-caret-right-bold"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="payment">
-              <div class="card olive text-center">
-                <i class="fas fa-file-pdf pdf-icon" style="font-size: 700%;"></i>
-              </div>
-              <div class="payment-details">
-                <h3>PDF</h3>
-                <div>
-                  <span>.pdf </span>
-                  <button class="icon-button" onclick="gerarPDF()">
-                    <i class="ph-caret-right-bold"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="payment">
-              <div class="card gray">
-                <i class="fas fa-file-word word-icon" style="font-size: 700%;"></i>
-              </div>
-              <div class="payment-details">
-                <h3>Word</h3>
-                <div>
-                  <span>.docx</span>
-                  <form method="get" action="{{ url_for('exportar_word') }}">
-                    <button class="icon-button">
-                      <i class="ph-caret-right-bold"></i>
-                    </button>
+					<div class="payments">
+						<div class="payment">
+							<div class="card green text-center">
+								<!-- Adiciona o ícone do Excel usando Font Awesome e ajusta o tamanho -->
+								<i class="fas fa-file-excel excel-icon" style="font-size: 700%;"></i>
+							</div>
+							<div class="payment-details">
+								<h3>Excel</h3>
+								<div>
+									<span>.xlsx</span>
+									<button class="icon-button" onclick="exportarParaExcel()">
+										<i class="ph-caret-right-bold"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="payment">
+							<div class="card olive text-center">
+								<i class="fas fa-file-pdf pdf-icon" style="font-size: 700%;"></i>
+							</div>
+							<div class="payment-details">
+								<h3>PDF</h3>
+								<div>
+									<span>.pdf </span>
+									<button class="icon-button" onclick="gerarPDF()">
+										<i class="ph-caret-right-bold"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="payment">
+							<div class="card gray">
+								<i class="fas fa-file-word word-icon" style="font-size: 700%;"></i>
+							</div>
+							<div class="payment-details">
+								<h3>Word</h3>
+								<div>
+									<span>.docx</span>
+									<form method="get" action="{{ url_for('exportar_word') }}">
+										<button class="icon-button">
+											<i class="ph-caret-right-bold"></i>
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                </div>
-              </div>
-            </div>
-          </div>
+					<div class="payment-section-footer">
+						<button class="save-button" onclick="apagarTodasInformacoes()">
+							<i class="ph-trash-bold"></i>
+						</button>
 
-          <div class="payment-section-footer">
-            <button class="save-button" onclick="apagarTodasInformacoes()">
-              <i class="ph-trash-bold"></i>
-            </button>
-
-          </div>
+					</div>
+				</section>
     </div>
 
   </div>

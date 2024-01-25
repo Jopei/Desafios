@@ -71,8 +71,7 @@
 				}
 			}
 
-			function redirectToPassagem() {
-			}
+			
 			function redirectToIndex() {
 				window.location.href = "{{ url_for('index') }}";
 			}
@@ -106,11 +105,6 @@
 						<span>Pessoas inseridas</span>
 					</a>
 
-					<a href="javascript:void(0);" onclick="redirectToPassagem()">
-						<i class="ph-coin"></i>
-						<span>Passagem por Pessoa</span>
-					</a>
-
 					<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
 						<i class="ph-swap"></i>
 						<span>Total de Passagem</span>
@@ -137,6 +131,7 @@
 						{% for pessoa in pessoas[-4:] %}
 						<div class="pessoa-info">
 							<h2>{{ pessoa[0] }}, Passagem: R$ {{ pessoa[1] }}</h2>
+						
 						</div>
 						{% endfor %}
 					</div>
@@ -191,7 +186,7 @@
 										<button class="icon-button">
 											<i class="ph-caret-right-bold"></i>
 										</button>
-
+									</form>
 								</div>
 							</div>
 						</div>
