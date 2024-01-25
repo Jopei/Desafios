@@ -1,6 +1,5 @@
 # Importa as bibliotecas necessárias do Flask
-from flask import Flask, render_template, request, redirect, url_for
-from flask import send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from docx import Document
 import pandas as pd
 from reportlab.pdfgen import canvas
@@ -15,6 +14,8 @@ pessoas = []
 @app.route('/')
 def index():
     return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
+
+
 
 # Rota para inserir informações de uma pessoa
 @app.route('/inserir_pessoa', methods=['POST'])
@@ -59,7 +60,7 @@ def detalhes_moedas(pessoa_index):
 @app.route('/total_moedas_global')
 def total_moedas_global():
     total_notas_moedas = calcular_total_notas_moedas(pessoas)
-    return render_template('total_moedas.html', total_notas_moedas=total_notas_moedas)
+    return render_template('total_moedas.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
 
 # Função para calcular a quantidade de notas e moedas necessárias
 def calcular_notas_moedas(valor):
@@ -80,9 +81,9 @@ def exibir_notas_moedas(qtd_notas_moedas):
     for i in range(len(notas_moedas)):
         if qtd_notas_moedas[i] > 0:
             if notas_moedas[i] >= 1:
-                mensagem += f"{qtd_notas_moedas[i]} nota(s) de {notas_moedas[i]} real(is)\n"
+                mensagem += f"{qtd_notas_moedas[i]} nota(s) de {notas_moedas[i]}\n"
             else:
-                mensagem += f"{qtd_notas_moedas[i]} moeda(s) de {notas_moedas[i]:.2f} centavo(os)\n"
+                mensagem += f"{qtd_notas_moedas[i]} moeda(s) de {notas_moedas[i]:.2f}\n"
 
     return mensagem
 
@@ -95,6 +96,8 @@ def calcular_total_notas_moedas(pessoas):
             total_notas_moedas[i] += pessoa[3][i]
 
     return total_notas_moedas
+
+
 
 @app.route('/inserir')
 def inserir():
