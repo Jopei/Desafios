@@ -137,12 +137,15 @@
 					<table border="1">
 						<tr>
 							<th>Nome</th>
+							<th> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+							 <!-- Célula vazia para criar um espaço -->
 							<th>Valor da Passagem</th>
 						</tr>
 						{% for pessoa in pessoas %}
 						<tr>
-							<td>{{ pessoa[0] }}</td> <!-- Nome -->
-							<td style="text-align: center;">{{ pessoa[1] }}</td> <!-- Valor da Passagem -->
+							<td style="text-align: center;">{{ pessoa[1] }}</td> <!-- Nome -->
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <!-- Célula vazia -->
+							<td style="text-align: center;">{{ pessoa[2] }}</td> <!-- Valor da Passagem -->
 						</tr>
 						{% endfor %}
 					</table>
