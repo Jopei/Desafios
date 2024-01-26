@@ -15,8 +15,6 @@ pessoas = []
 def index():
     return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
 
-
-
 # Rota para inserir informações de uma pessoa
 @app.route('/inserir_pessoa', methods=['POST'])
 def inserir_pessoa():
@@ -80,6 +78,8 @@ def detalhes_notas_moedas_por_pessoa(qtd_notas_moedas):
         detalhes_por_pessoa.append(detalhes)
 
     return detalhes_por_pessoa
+
+#
 def detalhes_notas_moedas(qtd_notas_moedas):
     notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
     detalhes = []
@@ -91,6 +91,7 @@ def detalhes_notas_moedas(qtd_notas_moedas):
             else:
                 detalhes.append(f"{qtd_notas_moedas[i]} moeda(s) de R$ {notas_moedas[i]:.2f}")
     return detalhes
+
 # Função para calcular a quantidade de notas e moedas necessárias
 def calcular_notas_moedas(valor):
     notas_moedas = [50, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01]
@@ -126,17 +127,18 @@ def calcular_total_notas_moedas(pessoas):
 
     return total_notas_moedas
 
-
-
+#
 @app.route('/inserir')
 def inserir():
     return render_template('inserir.html')
 
+#
 @app.route('/limpar')
 def limpar():
     pessoas.clear()
     return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
 
+#
 @app.route('/exportar_excel')
 def exportar_excel():
     if not pessoas:
@@ -151,6 +153,7 @@ def exportar_excel():
 
     return f'Dados exportados para {excel_filename}.'
 
+#
 @app.route('/gerar_pdf')
 def gerar_pdf():
     # Crie um objeto PDF
@@ -177,6 +180,7 @@ def gerar_pdf():
 
     return "PDF gerado com sucesso!"
 
+#
 @app.route('/exportar_word')
 def exportar_word():
     # Criar um novo documento Word
