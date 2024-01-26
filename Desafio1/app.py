@@ -1,11 +1,20 @@
 # Importa as bibliotecas necessárias do Flask
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from docx import Document
+import mysql.connector
 import pandas as pd
 from reportlab.pdfgen import canvas
 
 # Inicia a aplicação Flask
 app = Flask(__name__)
+
+# Conexão com o banco de dados MySQL
+db = mysql.connector.connect(
+    host="localhost",  # Host do MySQL
+    user="root",  # Usuário do MySQL
+    password="1312",  # Senha do MySQL
+    database="total_moedas"  # Nome do banco de dados
+)
 
 # Lista para armazenar informações das pessoas
 pessoas = []
