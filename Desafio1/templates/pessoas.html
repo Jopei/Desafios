@@ -77,6 +77,9 @@
 			function redirectToInserir() {
 				window.location.href = "{{ url_for('inserir') }}";
 			}
+			function redirectToAtualizar() {
+				window.location.href = "{{ url_for('atualizar') }}";
+			}
 			function redirectToTotal_moedas() {
 				window.location.href = "{{ url_for('total_moedas_global') }}";
 			}
@@ -85,6 +88,8 @@
 			}
 
 		</script>
+		<script src='https://unpkg.com/phosphor-icons'></script>
+		<script src="./script.js"></script>
 		<div class="app-body">
 			<div class="app-body-navigation">
 				<nav class="navigation">
@@ -97,10 +102,16 @@
 						<span>Inserir pessoa</span>
 					</a>
 
+					<a href="javascript:void(0);" onclick="redirectToAtualizar()">
+						<i class="ph-swap"></i>
+						<span>Atualizar pessoa</span>
+					</a>
+
 					<a href="javascript:void(0);" onclick="redirectToPessoas()">
 						<i class="ph-check-square"></i>
 						<span>Pessoas inseridas</span>
 					</a>
+
 					<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
 						<i class="ph-coin"></i>
 						<span>Total de moedas</span>
