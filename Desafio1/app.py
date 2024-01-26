@@ -141,17 +141,27 @@ def editar_pessoa_bd(pessoa_id):
 # Lista para armazenar informações das pessoas
 pessoas = []
 
-@app.route('/atualizar')
-def atualizar():
-    # Aqui você pode adicionar a lógica necessária para renderizar a página de atualização de pessoa
-    return render_template('atualizar.html')
+@app.route('/atualizar', methods=['GET', 'POST'])
+def atualizar_pessoa():
+    if request.method == 'POST':
+        nome = request.form['nome']
+        
+        # Verifica se o nome da pessoa existe no banco de dados
+        cursor = db.cursor()
+        cursor.execute("SELECT nome FROM pessoas WHERE nome = %s", (nome,))
+        pessoa = cursor.fetchone()
+        cursor.close()
 
-# Função para atualizar as informações no banco de dados
-def atualizar_pessoas():
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM pessoas")
-    pessoas = cursor.fetchall()
-    return pessoas
+        if pessoa:
+            # Aqui você pode adicionar a lógica para atualizar a pessoa no banco de dados
+            flash('Pessoa encontrada. Atualizando informações...')
+            return redirect(url_for('index'))
+        else:
+            flash('Pessoa não encontrada. Verifique o nome e tente novamente.')
+            return redirect(url_for('index'))
+
+    return render_template('atualizar.html') 
+
 
 # Rota principal que renderiza a página inicial
 @app.route('/')
