@@ -59,15 +59,6 @@ def buscar_pessoas():
     cursor.close()
     return render_template('index.html', pessoas=pessoas)
 
-
-# Função para obter todas as pessoas do banco de dados
-def obter_pessoas_bd():
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM pessoas")
-    pessoas_bd = cursor.fetchall()
-    cursor.close()
-    return pessoas_bd
-
 # Rota para listar todas as pessoas do banco de dados
 @app.route('/listar_pessoas_bd')
 def listar_pessoas_bd():
