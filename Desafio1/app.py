@@ -23,6 +23,16 @@ def inserir_pessoa_bd(nome, valor_passagem, passagens):
     db.commit()
     cursor.close()
 
+# Rota para buscar informações do banco de dados
+@app.route('/buscar_pessoas', methods=['GET'])
+def buscar_pessoas():
+    cursor = db.cursor()
+    cursor.execute("SELECT nome, valor_passagem FROM pessoas")
+    pessoas = cursor.fetchall()
+    cursor.close()
+    return render_template('index.html', pessoas=pessoas)
+
+
 # Função para obter todas as pessoas do banco de dados
 def obter_pessoas_bd():
     cursor = db.cursor()
@@ -112,6 +122,8 @@ def index():
     pessoas = cursor.fetchall()
     cursor.close()
     return render_template('index.html', pessoas=pessoas)
+
+
 
 # Rota para inserir informações de uma pessoa
 @app.route('/inserir_pessoa', methods=['POST'])
