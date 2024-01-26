@@ -16,13 +16,102 @@ db = mysql.connector.connect(
     database="total_moedas"  # Nome do banco de dados
 )
 
+# Função para inserir uma pessoa no banco de dados
+def inserir_pessoa_bd(nome, valor_passagem, passagens):
+    cursor = db.cursor()
+    cursor.execute("INSERT INTO pessoas (nome, valor_passagem, passagens) VALUES (%s, %s, %s)", (nome, valor_passagem, passagens))
+    db.commit()
+    cursor.close()
+
+# Função para obter todas as pessoas do banco de dados
+def obter_pessoas_bd():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM pessoas")
+    pessoas_bd = cursor.fetchall()
+    cursor.close()
+    return pessoas_bd
+
+# Rota para listar todas as pessoas do banco de dados
+@app.route('/listar_pessoas_bd')
+def listar_pessoas_bd():
+    pessoas_bd = obter_pessoas_bd()
+    return render_template('pessoas_bd.html', pessoas_bd=pessoas_bd)
+
+# Rota para inserir uma nova pessoa no banco de dados
+@app.route('/inserir_pessoa_bd', methods=['POST'])
+def inserir_pessoa_bd_route():
+    try:
+        # Obtém dados do formulário
+        nome = request.form['nome']
+        valor_passagem = float(request.form['valor_passagem'])
+        passagens = int(request.form['passagens'])
+
+        if valor_passagem <= 0 or passagens <= 0:
+            raise ValueError("Valores inválidos. Certifique-se de inserir valores positivos.")
+
+        # Insere a pessoa no banco de dados
+        inserir_pessoa_bd(nome, valor_passagem, passagens)
+
+        # Redireciona para a página de listagem de pessoas do banco de dados
+        return redirect(url_for('listar_pessoas_bd'))
+
+    except ValueError as e:
+        # Em caso de erro de validação, exibe uma mensagem de erro na página
+        return render_template('inserir.html', mensagem_erro=str(e))
+
+@app.route('/inserir_pessoa_db', methods=['POST'])
+def inserir_pessoa_db():
+    cursor = db.cursor()
+    nome = request.form['nome']
+    valor_passagem = float(request.form['valor_passagem'])
+    passagens = int(request.form['passagens'])
+    cursor.execute("INSERT INTO pessoas (nome, valor_passagem, passagens) VALUES (%s, %s, %s)", (nome, valor_passagem, passagens))
+    db.commit()
+    cursor.close()
+    return redirect(url_for('index'))
+
+# Rota para excluir uma pessoa do banco de dados
+@app.route('/excluir_pessoa_bd/<int:pessoa_id>')
+def excluir_pessoa_bd(pessoa_id):
+    cursor = db.cursor()
+    cursor.execute("DELETE FROM pessoas WHERE id = %s", (pessoa_id,))
+    db.commit()
+    cursor.close()
+    return redirect(url_for('listar_pessoas_bd'))
+
+# Rota para editar uma pessoa do banco de dados
+@app.route('/editar_pessoa_bd/<int:pessoa_id>', methods=['GET', 'POST'])
+def editar_pessoa_bd(pessoa_id):
+    if request.method == 'GET':
+        cursor = db.cursor()
+        cursor.execute("SELECT * FROM pessoas WHERE id = %s", (pessoa_id,))
+        pessoa = cursor.fetchone()
+        cursor.close()
+        return render_template('editar_pessoa.html', pessoa=pessoa)
+    elif request.method == 'POST':
+        nome = request.form['nome']
+        valor_passagem = float(request.form['valor_passagem'])
+        passagens = int(request.form['passagens'])
+
+        cursor = db.cursor()
+        cursor.execute("UPDATE pessoas SET nome = %s, valor_passagem = %s, passagens = %s WHERE id = %s",
+                       (nome, valor_passagem, passagens, pessoa_id))
+        db.commit()
+        cursor.close()
+        return redirect(url_for('listar_pessoas_bd'))
+
+
 # Lista para armazenar informações das pessoas
 pessoas = []
 
 # Rota principal que renderiza a página inicial
 @app.route('/')
 def index():
-    return render_template('index.html', pessoas=pessoas, total_notas_moedas=calcular_total_notas_moedas(pessoas), exibir_notas_moedas=exibir_notas_moedas)
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM pessoas")
+    pessoas = cursor.fetchall()
+    cursor.close()
+    return render_template('index.html', pessoas=pessoas)
 
 # Rota para inserir informações de uma pessoa
 @app.route('/inserir_pessoa', methods=['POST'])

@@ -127,10 +127,10 @@
 					</div>
 					<div>
 						<div class="inserir">
-							<form action="/inserir_pessoa" method="post">
+							<form action="/inserir_pessoa_db" method="post">
 
 								<br>
-								<label for="nome">Nome da Pessoa:</label>
+								<label for="nome">Nome:</label>
 								<input type="text" class="inserir_nome" placeholder="Coloque o nome da pessoa" id="nome"
 									name="nome" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+"
 									title="Digite apenas letras, sem números ou caracteres especiais" required><br>
@@ -144,7 +144,7 @@
 								<br>
 								<label for="passagens">Quantidade de Passagens:</label>
 								<input type="number" class="insrir_qtd" placeholder="Coloque a qtd de passagem"
-									id="passagens" name="passagens" step="1" required><br>
+									id="passagens" name="passagens" min="1" required><br>
 
 								<br>
 								<button class="save-button" type="submit">Inserir Pessoa</button>
