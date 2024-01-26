@@ -15,6 +15,33 @@ db = mysql.connector.connect(
     password="1312",  # Senha do MySQL
     database="total_moedas"  # Nome do banco de dados
 )
+@app.route('/apagar_dados', methods=['POST'])
+def apagar_dados():
+    try:
+        # Cria um cursor para executar comandos SQL
+        cursor = db.cursor()
+
+        # Comando SQL para excluir todas as informações das tabelas
+        sql_delete_pessoas = "DELETE FROM pessoas"
+        sql_delete_moedas = "DELETE FROM moedas"
+
+        # Executa os comandos SQL
+        cursor.execute(sql_delete_pessoas)
+        cursor.execute(sql_delete_moedas)
+
+        # Confirma as alterações no banco de dados
+        db.commit()
+
+        # Fecha o cursor
+        cursor.close()
+
+        # Redireciona para a página inicial
+        return redirect(url_for('index'))
+
+    except Exception as e:
+        # Em caso de erro, desfaz as alterações e exibe uma mensagem de erro
+        db.rollback()
+        return f"Erro ao apagar dados: {str(e)}"
 
 # Função para inserir uma pessoa no banco de dados
 def inserir_pessoa_bd(nome, valor_passagem, passagens):
@@ -114,6 +141,18 @@ def editar_pessoa_bd(pessoa_id):
 # Lista para armazenar informações das pessoas
 pessoas = []
 
+@app.route('/atualizar')
+def atualizar():
+    # Aqui você pode adicionar a lógica necessária para renderizar a página de atualização de pessoa
+    return render_template('atualizar.html')
+
+# Função para atualizar as informações no banco de dados
+def atualizar_pessoas():
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM pessoas")
+    pessoas = cursor.fetchall()
+    return pessoas
+
 # Rota principal que renderiza a página inicial
 @app.route('/')
 def index():
@@ -123,6 +162,21 @@ def index():
     cursor.close()
     return render_template('index.html', pessoas=pessoas)
 
+@app.route('/atualizar_pessoas', methods=['POST'])
+def atualizar_pessoas_route():
+    try:
+        cursor = db.cursor()
+        cursor.execute("UPDATE pessoas SET valor_passagem = %s, passagens = %s WHERE id = %s",
+                       (request.form['valor_passagem'], request.form['passagens'], request.form['id']))
+        db.commit()
+        flash('Pessoa atualizada com sucesso!', 'success')
+    except Exception as e:
+        db.rollback()
+        flash(f'Erro ao atualizar pessoa: {str(e)}', 'error')
+    finally:
+        cursor.close()
+
+    return redirect(url_for('index'))
 
 
 # Rota para inserir informações de uma pessoa

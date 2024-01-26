@@ -4,6 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Calculadora da AI</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
@@ -35,7 +37,6 @@
 			</div>
 
 		</header>
-
 		<script>
 			function exportarWord(index) {
 				// Envia uma requisição para o servidor para exportar os dados dessa pessoa
@@ -78,9 +79,6 @@
 			function redirectToInserir() {
 				window.location.href = "{{ url_for('inserir') }}";
 			}
-			function redirectToAtualizar() {
-				window.location.href = "{{ url_for('atualizar') }}";
-			}
 			function redirectToTotal_moedas() {
 				window.location.href = "{{ url_for('total_moedas_global') }}";
 			}
@@ -89,8 +87,6 @@
 			}
 
 		</script>
-		<script src='https://unpkg.com/phosphor-icons'></script>
-		<script src="./script.js"></script>
 		<div class="app-body">
 			<div class="app-body-navigation">
 				<nav class="navigation">
@@ -101,11 +97,6 @@
 					<a href="javascript:void(0);" onclick="redirectToInserir()">
 						<i class="ph-browsers"></i>
 						<span>Inserir pessoa</span>
-					</a>
-
-					<a href="javascript:void(0);" onclick="redirectToAtualizar()">
-						<i class="ph-swap"></i>
-						<span>Atualizar pessoa</span>
 					</a>
 
 					<a href="javascript:void(0);" onclick="redirectToPessoas()">
@@ -130,26 +121,39 @@
 			<div class="app-body-main-content">
 
 				</section>
-				<section class="recent-people-section">
+				<section class="transfer-section">
 					<div class="transfer-section-header">
-						<h2>Listar de pessoas</h2>
+						<h2>Atualizar pessoa</h2>
 					</div>
-					<table border="1">
-						<tr>
-							<th>Nome</th>
-							<th>Valor da Passagem</th>
-						</tr>
-						{% for pessoa in pessoas %}
-						<tr>
-							<td>{{ pessoa[0] }}</td> <!-- Nome -->
-							<td style="text-align: center;">{{ pessoa[1] }}</td> <!-- Valor da Passagem -->
-						</tr>
-						{% endfor %}
-					</table>
-					<br>
-					
-				</section>
+					<div>
+						<div class="inserir">
+							<form action="/atualizar_pessoa" method="POST">
+
+								<br>
+								<label for="nome">Nome:</label>
+								<input type="text" class="inserir_nome" placeholder="Coloque o nome da pessoa" id="nome"
+									name="nome" pattern="[A-Za-zÀ-ÖØ-öø-ÿ\s]+"
+									title="Digite apenas letras, sem números ou caracteres especiais" required><br>
+
+								<br>
+								<label for="valor_passagem">Valor da Passagem:</label>
+								<input type="nome" class="inserir_valor" placeholder="Coloque o valor da passagem"
+									id="valor_passagem" name="valor_passagem" pattern="[0-9]+([,.][0-9]+)?"
+									title="Digite um número válido" required><br>
+
+								<br>
+								<label for="passagens">Quantidade de Passagens:</label>
+								<input type="number" class="insrir_qtd" placeholder="Coloque a qtd de passagem"
+									id="passagens" name="passagens" min="1" required><br>
+
+								<br>
+								<input type="submit" value="Atualizar">
+							</form>
+						</div>
+					</div>
+
 			</div>
+			</section>
 			<section class="payment-section">
 				<h2>Exportações</h2>
 				<div class="payment-section-header">
@@ -206,26 +210,22 @@
 					</div>
 
 					<div class="payment-section-footer">
-						<form action="/buscar_pessoas" method="GET">
-							<button class="save-button" type="submit">
-								<i class="ph-arrow-up"></i>
-							</button>
-						</form>
-						
-						<form action="/apagar_dados" method="POST">
-							<button class="save-button" type="submit">
-								<i class="ph-trash-bold"></i>
-							</button>
-						</form>
+						<button class="save-button" onclick="apagarTodasInformacoes()">
+							<i class="ph-trash-bold"></i>
+						</button>
 
 					</div>
 				</section>
+
+
 		</div>
 
 
-		<!-- partial -->
-		<script src='https://unpkg.com/phosphor-icons'></script>
-		<script src="./script.js"></script>
+
+	</div>
+	<!-- partial -->
+	<script src='https://unpkg.com/phosphor-icons'></script>
+	<script src="./script.js"></script>
 
 </body>
 
