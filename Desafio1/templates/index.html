@@ -2,124 +2,98 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<title>Calculadora da AI</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-		integrity="sha384-ho72S2l26ePvNQ8k3uLpysJ2cuRXHzxj2wvw4Hkz6Ay6zxygeU8U3cd5X51btFFq" crossorigin="anonymous">
-	<link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>Calculadora da AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+        integrity="sha384-ho72S2l26ePvNQ8k3uLpysJ2cuRXHzxj2wvw4Hkz6Ay6zxygeU8U3cd5X51btFFq" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/style.css">
 
+    <style>
+        .app-body-navigation {
+            display: block;
+        }
+
+        .app-body-main-content {
+            width: 100%;
+        }
+
+        .app-body-main-content section {
+            width: 80%; /* Ajuste o tamanho conforme necessário */
+            margin: 0 auto; /* Centraliza horizontalmente */
+        }
+
+        @media only screen and (max-width: 600px) {
+            .app-body-navigation {
+                display: none;
+            }
+
+            .app-body-main-content section {
+                width: 100%; /* Ocupa toda a largura disponível */
+            }
+        }
+    </style>
 </head>
 
 <body>
-	<!-- partial:index.partial.html -->
-	<div class="app">
-		<header class="app-header">
-			<div class="app-header-logo">
-				<div class="logo">
-					<span class="logo-icon">
-						<img src="https://assets.codepen.io/285131/almeria-logo.svg" />
-					</span>
-					<h1 class="logo-title">
-						<span>João</span>
-						<span>AIMG</span>
-					</h1>
-				</div>
-			</div>
+    <!-- partial:index.partial.html -->
+    <div class="app">
+        <header class="app-header">
+            <div class="app-header-logo">
+                <div class="logo">
+                    <span class="logo-icon">
+                        <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+                    </span>
+                    <h1 class="logo-title">
+                        <span>João</span>
+                        <span>AIMG</span>
+                    </h1>
+                </div>
+                <br>
+            </div>
 
-			<div class="app-header-mobile">
-				<button class="icon-button large">
-					<i class="ph-list"></i>
-				</button>
-			</div>
+        </header>
 
-		</header>
+        <script src='https://unpkg.com/phosphor-icons'></script>
+        <script src="./script.js"></script>
+        <div class="app-body">
 
-		<script>
-			function exportarWord(index) {
-				// Envia uma requisição para o servidor para exportar os dados dessa pessoa
-				fetch(`/exportar_word/${index}`, { method: 'GET' })
-					.then(response => response.blob())
-					.then(blob => {
-						// Cria um link para fazer o download do arquivo
-						const url = window.URL.createObjectURL(new Blob([blob]));
-						const a = document.createElement('a');
-						a.href = url;
-						a.download = `relatorio_pessoa_${index}.docx`;
-						document.body.appendChild(a);
-						a.click();
-						document.body.removeChild(a);
-						window.URL.revokeObjectURL(url);
-					})
-					.catch(error => console.error('Erro ao exportar para Word:', error));
-			}
-			function gerarPDF() {
-				// Redirecionar para a rota que gera o PDF
-				window.location.href = "{{ url_for('gerar_pdf') }}";
-			}
-			function exportarParaExcel() {
-				// Redireciona para a rota que exporta para Excel
-				window.location.href = "{{ url_for('exportar_excel') }}";
-			}
-			// Função para redirecionar para a página inserir.html
-			function apagarTodasInformacoes() {
-				var confirmacao = confirm("Tem certeza de que deseja apagar todas as informações?");
-				// Se o usuário confirmar, redirecionar para a página de apagar
-				if (confirmacao) {
-					window.location.href = "{{ url_for('limpar') }}";
-				}
-			}
+            <div class="app-body-navigation">
+                <nav class="navigation">
+                    <a href="javascript:void(0);" onclick="toggleMenu()">
+                        <i class="ph-list"></i>
+                        <span>Menu</span>
+                    </a>
+                    <a href="javascript:void(0);" onclick="redirectToIndex()">
+                        <i class="ph-list"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="javascript:void(0);" onclick="redirectToInserir()">
+                        <i class="ph-browsers"></i>
+                        <span>Inserir pessoa</span>
+                    </a>
 
+                    <a href="javascript:void(0);" onclick="redirectToAtualizar()">
+                        <i class="ph-swap"></i>
+                        <span>Atualizar pessoa</span>
+                    </a>
 
-			function redirectToIndex() {
-				window.location.href = "{{ url_for('index') }}";
-			}
-			function redirectToInserir() {
-				window.location.href = "{{ url_for('inserir') }}";
-			}
-			function redirectToAtualizar() {
-				window.location.href = "{{ url_for('atualizar_pessoa') }}";
-			}
-			function redirectToTotal_moedas() {
-				window.location.href = "{{ url_for('total_moedas_global') }}";
-			}
-			function redirectToPessoas() {
-				window.location.href = "{{ url_for('listar_pessoas') }}";
-			}
+                    <a href="javascript:void(0);" onclick="redirectToPessoas()">
+                        <i class="ph-check-square"></i>
+                        <span>Pessoas inseridas</span>
+                    </a>
 
-		</script>
-		<script src='https://unpkg.com/phosphor-icons'></script>
-		<script src="./script.js"></script>
-		<div class="app-body">
-			<div class="app-body-navigation">
-				<nav class="navigation">
-					<a href="javascript:void(0);" onclick="redirectToIndex()">
-						<i class="ph-list"></i>
-						<span>Home</span>
-					</a>
-					<a href="javascript:void(0);" onclick="redirectToInserir()">
-						<i class="ph-browsers"></i>
-						<span>Inserir pessoa</span>
-					</a>
+                    <a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
+                        <i class="ph-coin"></i>
+                        <span>Total de moedas</span>
+                    </a>
 
-					<a href="javascript:void(0);" onclick="redirectToAtualizar()">
-						<i class="ph-swap"></i>
-						<span>Atualizar pessoa</span>
-					</a>
-
-					<a href="javascript:void(0);" onclick="redirectToPessoas()">
-						<i class="ph-check-square"></i>
-						<span>Pessoas inseridas</span>
-					</a>
-
-					<a href="javascript:void(0);" onclick="redirectToTotal_moedas()">
-						<i class="ph-coin"></i>
-						<span>Total de moedas</span>
-					</a>
-
-				</nav>
-				<footer class="footer">
+                </nav>
+				<br>
+				<br>
+				
+               <footer class="footer">
 					<h1>Desafio<small>©</small></h1>
 					<div>
 						AIMG ©<br />
@@ -127,108 +101,210 @@
 					</div>
 				</footer>
 			</div>
-			<div class="app-body-main-content">
 
-				</section>
-				<section class="recent-people-section">
-					<div class="transfer-section-header">
-						<h2>Listar de pessoas</h2>
-					</div>
-					<table border="1">
-						<tr>
-							<th>Nome</th>
-							<th> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-							 <!-- Célula vazia para criar um espaço -->
-							<th>Valor da Passagem</th>
-						</tr>
-						{% for pessoa in pessoas %}
-						<tr>
-							<td style="text-align: center;">{{ pessoa[1] }}</td> <!-- Nome -->
-							<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> <!-- Célula vazia -->
-							<td style="text-align: center;">{{ pessoa[2] }}</td> <!-- Valor da Passagem -->
-						</tr>
-						{% endfor %}
-					</table>
-					<br>
-					
-				</section>
-			</div>
-			<section class="payment-section">
-				<h2>Exportações</h2>
-				<div class="payment-section-header">
+            <div class="app-body-main-content">
 
-				</div>
-				<section class="payment-section">
+                <section class="recent-people-section">
+                    <div class="transfer-section-header">
+                        <h2>Listar de pessoas</h2>
+                    </div>
+                    <table border="1">
+                        <tr>
+                            <th>Nome</th>
+                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                            <!-- Célula vazia para criar um espaço -->
+                            <th>Valor da Passagem</th>
+                        </tr>
+                        {% for pessoa in pessoas %}
+                        <tr>
+                            <td style="text-align: center;">{{ pessoa[1] }}</td> <!-- Nome -->
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+                            <td style="text-align: center;">{{ pessoa[2] }}</td> <!-- Valor da passagem --> 
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <br>
 
-					<div class="payments">
-						<div class="payment">
-							<div class="card green text-center">
-								<!-- Adiciona o ícone do Excel usando Font Awesome e ajusta o tamanho -->
-								<i class="fas fa-file-excel excel-icon" style="font-size: 700%;"></i>
-							</div>
-							<div class="payment-details">
-								<h3>Excel</h3>
-								<div>
-									<span>.xlsx</span>
-									<button class="icon-button" onclick="exportarParaExcel()">
-										<i class="ph-caret-right-bold"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="payment">
-							<div class="card olive text-center">
-								<i class="fas fa-file-pdf pdf-icon" style="font-size: 700%;"></i>
-							</div>
-							<div class="payment-details">
-								<h3>PDF</h3>
-								<div>
-									<span>.pdf </span>
-									<button class="icon-button" onclick="gerarPDF()">
-										<i class="ph-caret-right-bold"></i>
-									</button>
-								</div>
-							</div>
-						</div>
-						<div class="payment">
-							<div class="card gray">
-								<i class="fas fa-file-word word-icon" style="font-size: 700%;"></i>
-							</div>
-							<div class="payment-details">
-								<h3>Word</h3>
-								<div>
-									<span>.docx</span>
-									<form method="get" action="{{ url_for('exportar_word') }}">
-										<button class="icon-button">
-											<i class="ph-caret-right-bold"></i>
-										</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
+                </section>
+            </div>
 
-				 	<div class="payment-section-footer">
-			<!--		<form action="/buscar_pessoas" method="GET">
-							<button class="save-button" type="submit">
-								<i class="ph-arrow-up"></i>
-							</button>
-						</form> -->
-						
-						<form action="/apagar_dados" method="POST">
-							<button class="save-button" type="submit">
-								<i class="ph-trash-bold"></i>
-							</button>
-						</form> 
+            <section class="payment-section">
+                <h2>Exportações</h2>
 
-					</div>
-				</section>
-		</div>
+                <div class="payment-section-header">
+
+                </div>
+                <section class="payment-section">
+
+                    <div class="payments">
+
+                        <div class="payment">
+                            <div class="card green text-center">
+                                <!-- Adiciona o ícone do Excel usando Font Awesome e ajusta o tamanho -->
+                                <i class="fas fa-file-excel excel-icon" style="font-size: 700%;"></i>
+                            </div>
+                            <div class="payment-details">
+                                <h3>Excel</h3>
+                                <div>
+                                    <span>.xlsx</span>
+                                    <button class="icon-button" onclick="exportarParaExcel()">
+                                        <i class="ph-caret-right-bold"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment">
+                            <div class="card olive text-center">
+                                <i class="fas fa-file-pdf pdf-icon" style="font-size: 700%;"></i>
+                            </div>
+                            <div class="payment-details">
+                                <h3>PDF</h3>
+                                <div>
+                                    <span>.pdf </span>
+                                    <button class="icon-button" onclick="gerarPDF()">
+                                        <i class="ph-caret-right-bold"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment">
+                            <div class="card gray">
+                                <i class="fas fa-file-word word-icon" style="font-size: 700%;"></i>
+                            </div>
+                            <div class="payment-details">
+                                <h3>Word</h3>
+                                <div>
+                                    <span>.docx</span>
+                                    <form method="get" action="{{ url_for('exportar_word') }}">
+                                        <button class="icon-button">
+                                            <i class="ph-caret-right-bold"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
-		<!-- partial -->
-		<script src='https://unpkg.com/phosphor-icons'></script>
-		<script src="./script.js"></script>
+                    <div class="payment-section-footer">
+
+                        <button id="menuButton"><i class="fas fa-file-export"></i></button>
+                        <div id="menu" class="menu">
+                            <a href="#" onclick="exportarParaExcel()">
+                                <i class="fas fa-file-excel excel-icon"> Arquivo Excel</i>
+                            </a>
+
+                            <a href="#" onclick="gerarPDF()">
+                                <i class="fas fa-file-pdf pdf-icon"> Arquivo PDF</i>
+                            </a>
+
+                            <a href="#" onclick="exportarWord()">
+                                <i class="fas fa-file-word word-icon"> Arquivo Word</i>
+                            </a>
+                        </div>
+
+
+                        <form action="/apagar_dados" method="POST">
+                            <button class="save-button" type="submit">
+                                <i class="ph-trash-bold"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </section>
+            </section>
+        </div>
+
+
+        <!-- partial -->
+        <script src='https://unpkg.com/phosphor-icons'></script>
+        <script src="/Desafio1/script/script.js"></script>
+        <script>
+            var menuButton = document.getElementById("menuButton");
+            var menu = document.getElementById("menu");
+            var appBodyNavigation = document.querySelector(".app-body-navigation");
+
+            function toggleMenu() {
+                if (appBodyNavigation.style.display === "block") {
+                    appBodyNavigation.style.display = "none";
+                } else {
+                    appBodyNavigation.style.display = "block";
+                }
+            }
+
+            // Adiciona um evento de clique ao botão
+            menuButton.addEventListener("click", function (event) {
+                // Alterna a exibição do menu ao clicar no botão
+                if (menu.style.display === "block") {
+                    menu.style.display = "none";
+                } else {
+                    menu.style.display = "block";
+                }
+
+                // Impede a propagação do evento para que o clique no botão não seja detectado como clique no documento
+                event.stopPropagation();
+            });
+
+            // Adiciona um evento de clique no documento
+            document.addEventListener("click", function (event) {
+                // Verifica se o clique não foi no botão nem no menu
+                if (event.target !== menuButton && event.target !== menu) {
+                    // Oculta o menu se o clique não foi no botão nem no menu
+                    menu.style.display = "none";
+                }
+            });
+
+            function exportarWord(index) {
+                // Envia uma requisição para o servidor para exportar os dados dessa pessoa
+                fetch(`/exportar_word/${index}`, { method: 'GET' })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        // Cria um link para fazer o download do arquivo
+                        const url = window.URL.createObjectURL(new Blob([blob]));
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `relatorio_pessoa_${index}.docx`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => console.error('Erro ao exportar para Word:', error));
+            }
+            function gerarPDF() {
+                // Redirecionar para a rota que gera o PDF
+                window.location.href = "{{ url_for('gerar_pdf') }}";
+            }
+            function exportarParaExcel() {
+                // Redireciona para a rota que exporta para Excel
+                window.location.href = "{{ url_for('exportar_excel') }}";
+            }
+            // Função para redirecionar para a página inserir.html
+            function apagarTodasInformacoes() {
+                var confirmacao = confirm("Tem certeza de que deseja apagar todas as informações?");
+                // Se o usuário confirmar, redirecionar para a página de apagar
+                if (confirmacao) {
+                    window.location.href = "{{ url_for('limpar') }}";
+                }
+            }
+
+
+            function redirectToIndex() {
+                window.location.href = "{{ url_for('index') }}";
+            }
+            function redirectToInserir() {
+                window.location.href = "{{ url_for('inserir') }}";
+            }
+            function redirectToAtualizar() {
+                window.location.href = "{{ url_for('atualizar_pessoa') }}";
+            }
+            function redirectToTotal_moedas() {
+                window.location.href = "{{ url_for('total_moedas_global') }}";
+            }
+            function redirectToPessoas() {
+                window.location.href = "{{ url_for('listar_pessoas') }}";
+            }
+        </script>
 
 </body>
 

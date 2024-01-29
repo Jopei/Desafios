@@ -846,3 +846,40 @@ button:focus {
   outline: 0;
   box-shadow: 0 0 0 2px var(--c-gray-800), 0 0 0 4px var(--c-gray-300);
 }
+
+/* Estilos para ocultar o menu por padrão */
+.menu {
+  display: none;
+  position: absolute;
+  background-color: #313131;
+  border-radius: 7px;
+  min-width: 160px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  border: 0.5px solid var(--c-text-tertiary); /* Adiciona uma borda branca */
+}
+
+.menu a {
+  
+  font-size: 16px; /* Defina o tamanho da fonte desejado */
+  color: white;
+  display: block;
+}
+/* Estilo para o botão */
+#menuButton {
+  border: 1px solid currentColor;
+  color: var(--c-text-tertiary);
+  border-radius: 6px;
+  padding: 0.75em 2.5em;
+  background-color: transparent;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
+
+
+
+/* Estilo para os links do menu ao passar o mouse sobre eles */
+.menu a:hover {
+  background-color: #ddd;
+}
