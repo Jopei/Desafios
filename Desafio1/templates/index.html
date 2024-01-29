@@ -28,7 +28,9 @@
             .app-body-navigation {
                 display: none;
             }
-
+			.app-body-minus-content section {
+                width: 100%; /* Ocupa toda a largura disponível */
+            }
             .app-body-main-content section {
                 width: 100%; /* Ocupa toda a largura disponível */
             }
@@ -62,8 +64,8 @@
             <div class="app-body-navigation">
                 <nav class="navigation">
                     <a href="javascript:void(0);" onclick="toggleMenu()">
-                        <i class="ph-list"></i>
-                        <span>Menu</span>
+                        <i class="ph-x"></i>
+                        <span>Fechar Menu</span>
                     </a>
                     <a href="javascript:void(0);" onclick="redirectToIndex()">
                         <i class="ph-list"></i>
@@ -128,6 +130,7 @@
                 </section>
             </div>
 
+			<div class="app-body-minus-content">
             <section class="payment-section">
                 <h2>Exportações</h2>
 
@@ -213,6 +216,7 @@
                     </div>
                 </section>
             </section>
+		</div>
         </div>
 
 
