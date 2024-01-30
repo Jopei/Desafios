@@ -877,7 +877,9 @@ button:focus {
   cursor: pointer;
 }
 
-
+.expanded {
+  flex: 1;
+}
 
 /* Estilo para os links do menu ao passar o mouse sobre eles */
 .menu a:hover {
