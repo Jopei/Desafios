@@ -24,9 +24,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.2
   firebase_core: ^2.25.3
-  firebase_auth: ^4.17.3
+  firebase_auth: ^4.5.0
+  # Outros pacotes do Firebase que você está usando
+  firebase_database: 10.4.4
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeFirebase();
   runApp(const MyApp());
+}
+
+Future<void> initializeFirebase() async {
+  FirebaseOptions firebaseOptions = FirebaseOptions(
+      apiKey: "AIzaSyARE1K6vM4j_QZlDVFBhgC9vl7uaF0c7ho",
+      authDomain: "plc-connect-ed3dd.firebaseapp.com",
+      databaseURL: "https://plc-connect-ed3dd-default-rtdb.firebaseio.com",
+      projectId: "plc-connect-ed3dd",
+      storageBucket: "plc-connect-ed3dd.appspot.com",
+      messagingSenderId: "689102691305",
+      appId: "1:689102691305:web:7fdf7aa6e2bb2f700cc978",
+      measurementId: "G-WESV9N1VQZ");
+
+  await Firebase.initializeApp(options: firebaseOptions);
 }
 
 class MyApp extends StatelessWidget {
@@ -43,16 +60,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _isTrue = true;
-
-
+  final DatabaseReference _ligadoRef =
+      FirebaseDatabase.instance.reference().child('ligado');
 
   void _toggleBoolean() {
     setState(() {
       _isTrue = !_isTrue;
     });
+    _ligadoRef.set(_isTrue); // Enviar o valor para o Firebase Realtime Database
   }
 
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text(
                 'Aperte para alterar o estado da luz',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -85,16 +102,21 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 20),
             SizedBox(
-              width: 200,
-              height: 60,
+              width: 300,
+              height: 100,
               child: ElevatedButton(
                 onPressed: _toggleBoolean,
                 style: ElevatedButton.styleFrom(
                   primary: _isTrue ? Colors.white : Colors.black,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
                 child: Text(
-                  _isTrue ? 'Luz Desligada' : 'Luz Ligada',
+                  _isTrue ? 'Luz: Ligada' : 'Luz: Desligada',
                   style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                     color: _isTrue ? Colors.black : Colors.white,
                   ),
                 ),
