@@ -27,7 +27,11 @@ db = firebase.database()
 def index():
     # Busca o dado booleano no Firebase
     dado_booleano = buscar_dado_booleano("ligado")
-    enviar_dado_para_plc(dado_booleano)
+    
+    # Envia para o PLC
+    if dado_booleano is not None:
+        enviar_para_plc(dado_booleano)
+    
     return render_template('index.html', dado_booleano=dado_booleano)
 
 # Função para buscar o dado booleano
@@ -47,21 +51,6 @@ def get_dado_booleano():
     dado_booleano = buscar_dado_booleano("ligado")# Exemplo: substitua pelo seu valor real
     return str(dado_booleano)
 
-def enviar_dado_para_plc(dado_booleano):
-    try:
-        # Conecta-se ao PLC Siemens
-        plc = client.Client()
-    #Area do plc    plc.connect('192.168.0.1', 0, 2)  # Substitua pelo IP do seu PLC
-
-        # Escreve o dado booleano em um byte específico do DB
-        byte = 10  # Substitua pelo byte onde você deseja escrever o dado booleano
-        db_number = 1  # Substitua pelo número do DB
-        plc.write_area(client.S7AreaDB, db_number, byte, [dado_booleano])
-
-        plc.disconnect()
-    except Exception as e:
-        print("Ocorreu um erro ao enviar o dado para o PLC:", e)
-
 def enviar_segundo_para_firebase():
     while True:
         try:
@@ -71,6 +60,19 @@ def enviar_segundo_para_firebase():
         except Exception as e:
             print("Ocorreu um erro ao enviar o segundo para o Firebase:", e)
 
+def enviar_para_plc(valor):
+    try:
+        # Conecte-se ao PLC
+        plc = client.Client()
+        plc.connect('192.168.1.10', 0, 1)  # Substitua 'endereco_ip_plc' pelo endereço IP do seu PLC
+
+        # Envie o valor para a entrada Q0.0
+        plc.write_bit('Q0.0', valor)
+
+        # Desconecte-se do PLC
+        plc.disconnect()
+    except Exception as e:
+        print("Ocorreu um erro ao enviar dados para o PLC:", e)
 
 if __name__ == '__main__':
     # Inicia uma thread separada para enviar o tempo para o Firebase continuamente
