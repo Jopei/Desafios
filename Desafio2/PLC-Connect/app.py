@@ -62,19 +62,20 @@ def enviar_dado_para_plc(dado_booleano):
     except Exception as e:
         print("Ocorreu um erro ao enviar o dado para o PLC:", e)
 
-def enviar_tempo_para_firebase():
+def enviar_segundo_para_firebase():
     while True:
         try:
-            tempo = int(time.time()) * 2
-            db.child("segundotempo").set(tempo)
+            segundo = time.localtime().tm_sec
+            db.child("segundotempo").set(segundo)
             time.sleep(1)  # Espera 1 segundo antes de atualizar novamente
         except Exception as e:
-            print("Ocorreu um erro ao enviar o tempo para o Firebase:", e)
+            print("Ocorreu um erro ao enviar o segundo para o Firebase:", e)
+
 
 if __name__ == '__main__':
     # Inicia uma thread separada para enviar o tempo para o Firebase continuamente
     import threading
-    firebase_thread = threading.Thread(target=enviar_tempo_para_firebase)
+    firebase_thread = threading.Thread(target=enviar_segundo_para_firebase)
     firebase_thread.daemon = True
     firebase_thread.start()
 
