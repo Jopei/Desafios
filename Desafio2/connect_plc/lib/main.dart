@@ -60,14 +60,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _isTrue = true;
+  String _segundos = '00:00:00';
+
   final DatabaseReference _ligadoRef =
       FirebaseDatabase.instance.reference().child('ligado');
+  final DatabaseReference _segundosRef =
+      FirebaseDatabase.instance.reference().child('segundotempo');
 
   void _toggleBoolean() {
     setState(() {
       _isTrue = !_isTrue;
     });
     _ligadoRef.set(_isTrue); // Enviar o valor para o Firebase Realtime Database
+  }
+
+  String _formatDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    //String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60)*2);
+    //String twoDigitHours = twoDigits(duration.inHours);
+    //return "$twoDigitHours:$twoDigitMinutes:$twoDigitSeconds";
+    return "$twoDigitSeconds";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _segundosRef.onValue.listen((event) {
+      final dynamic segundos = event.snapshot.value;
+      if (segundos != null) {
+        setState(() {
+          _segundos = _formatDuration(Duration(seconds: segundos as int));
+        });
+      }
+    });
   }
 
   @override
@@ -119,6 +145,24 @@ class _MyHomePageState extends State<MyHomePage> {
                     fontWeight: FontWeight.bold,
                     color: _isTrue ? Colors.black : Colors.white,
                   ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.all(20),
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.lightGreen[300],
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white),
+              ),
+              child: Text(
+                '$_segundos segundo(os)',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
             ),
