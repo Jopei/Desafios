@@ -61,11 +61,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool _isTrue = true;
   String _segundos = '00:00:00';
+  String _valorLerdoplc = '';
 
   final DatabaseReference _ligadoRef =
       FirebaseDatabase.instance.reference().child('ligado');
   final DatabaseReference _segundosRef =
       FirebaseDatabase.instance.reference().child('segundotempo');
+  final DatabaseReference _lerdoplcRef =
+      FirebaseDatabase.instance.reference().child('lerdoplc');
 
   void _toggleBoolean() {
     setState(() {
@@ -76,9 +79,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
-  //  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
-    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60)*2);
-  //  String twoDigitHours = twoDigits(duration.inHours);
+   // String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60)* 2);
+   // String twoDigitHours = twoDigits(duration.inHours);
     return "$twoDigitSeconds";
   }
 
@@ -90,6 +93,15 @@ class _MyHomePageState extends State<MyHomePage> {
       if (segundos != null) {
         setState(() {
           _segundos = _formatDuration(Duration(seconds: segundos as int));
+        });
+      }
+    });
+
+    _lerdoplcRef.onValue.listen((event) {
+      final dynamic valorLerdoplc = event.snapshot.value;
+      if (valorLerdoplc != null) {
+        setState(() {
+          _valorLerdoplc = valorLerdoplc.toString();
         });
       }
     });
@@ -163,6 +175,14 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20),
             Text(
               '$_segundos segundo${_segundos != '01:00:00' ? 's' : ''}',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Valor lido do PLC: $_valorLerdoplc',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
