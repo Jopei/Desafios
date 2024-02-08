@@ -36,10 +36,7 @@ TestePLC.connect("192.168.1.10",0,1)
 def index():
     # Busca o dado booleano no Firebase
     dado_booleano = buscar_dado_booleano("ligado")
-    
     # Envia para o PLC
-    
-    
     return render_template('index.html', dado_booleano=dado_booleano)
 # Função para buscar o dado booleano
 def buscar_dado_booleano(caminho):
@@ -68,19 +65,7 @@ def enviar_segundo_para_firebase():
         except Exception as e:
             print("Ocorreu um erro ao enviar o segundo para o Firebase:", e)
 
-def enviar_para_plc(valor):
-    try:
-        # Conecte-se ao PLC
-        plc = client.Client()
-        plc.connect('192.168.1.10', 0, 1)  # Substitua 'endereco_ip_plc' pelo endereço IP do seu PLC
 
-        # Envie o valor para a entrada Q0.0
-        plc.write_bit('Q0.0', valor)
-
-        # Desconecte-se do PLC
-        plc.disconnect()
-    except Exception as e:
-        print("Ocorreu um erro ao enviar dados para o PLC:", e)
 
 def ReadMemory(plc,byte,datatype,db,bit=0,tam_st=0):
     if datatype=='String':
