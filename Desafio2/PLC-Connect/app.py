@@ -55,8 +55,10 @@ def get_dado_booleano():
 def enviar_segundo_para_firebase():
     while True:
         try:
+            ler = ReadMemory(TestePLC, 2, S7WLByte, 1 )
             segundo = time.localtime().tm_sec
             db.child("segundotempo").set(segundo)
+            db.child("lerdoplc").set(ler)
             time.sleep(1)  # Espera 1 segundo antes de atualizar novamente
         except Exception as e:
             print("Ocorreu um erro ao enviar o segundo para o Firebase:", e)
