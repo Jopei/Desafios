@@ -1,15 +1,11 @@
 from flask import Flask, render_template
 import pyrebase
 import time
-import snap7.client as client
 import snap7.client as c
 from snap7.util import *
 from snap7.snap7types import *
-import numbers
 import time
-import sys
-import os
-import snap7
+
 
 app = Flask(__name__)
 # Configure sua conexão com o Firebase
